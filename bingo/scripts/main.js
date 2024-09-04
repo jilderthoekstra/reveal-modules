@@ -9,6 +9,7 @@ class NumberRepresentation {
         console.log(`${this.display}: ${this.text}`);
     }
 }
+let isAnimating = false;
 
 // Initialize Reveal.js
 Reveal.initialize({
@@ -127,6 +128,16 @@ function pickRandomBingoIndex() {
 
 async function getNextBingoNumber(event) {
     event.preventDefault();
+    if (isAnimating === true) {
+        return false;
+    }
+    if (numbers.length === 0) {
+        document.getElementById('bingo-display').innerHTML = "Geen getallen meer."
+        return false;
+    }
+    console.log("get next number");
+    isAnimating = true;
+
 
     gsap.set("#bingo-next", { pointerEvents: "none"});
     gsap.to("#bingo-next", {
@@ -187,6 +198,7 @@ async function getNextBingoNumber(event) {
                 ease: "power1.out",
                 onComplete: function() {
                     gsap.set("#bingo-next", { pointerEvents: ""});
+                    isAnimating = false;
                 }
             });
         }
